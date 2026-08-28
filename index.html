@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faisal Muzaffar | Software & Data Engineering</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <style>
+        /* Editorial & Creative Design Variables */
+        :root {
+            --accent: #7c3aed; /* Vibrant, creative purple */
+            --accent-hover: #6d28d9;
+            
+            /* Light Theme: Warm, paper-like and inviting */
+            --bg: #fdfcfb;
+            --surface: #ffffff;
+            --text-main: #27272a;
+            --text-muted: #71717a;
+            --border: #e4e4e7;
+            --shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+            
+            /* Typography: Serif for creativity, Sans for readability */
+            --font-display: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+            --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: "JetBrains Mono", "Fira Code", monospace;
+            
+            --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Dark Theme: Soft, matte, sophisticated */
+        [data-theme="dark"] {
+            --bg: #18181b; /* Soft zinc */
+            --surface: #27272a;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --border: #3f3f46;
+            --accent: #a78bfa; /* Softer pastel purple for dark mode */
+            --accent-hover: #c4b5fd;
+            --shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+            cursor: none; /* Custom cursor */
+        }
+
+        /* Fluid, Organic Custom Cursor */
+        .cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            width: 10px; height: 10px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            transition: width 0.3s, height 0.3s, opacity 0.3s, background-color 0.3s;
+        }
+
+        @media (pointer: coarse) {
+            body { cursor: auto; }
+            .cursor-dot { display: none !important; }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2.5rem 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-style: italic;
+            text-decoration: none;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--accent);
+            font-style: normal;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            position: relative;
+            transition: color var(--transition);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--accent);
+            transition: width var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Elegant Theme Toggle */
+        .theme-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            transition: transform var(--transition), color var(--transition);
+        }
+        
+        .theme-btn:hover {
+            color: var(--accent);
+            transform: rotate(15deg);
+        }
+
+        .theme-btn svg { width: 22px; height: 22px; }
+        [data-theme="dark"] .sun-icon { display: none; }
+        [data-theme="light"] .moon-icon { display: none; }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 5rem;
+            min-height: 70vh;
+            padding: 5rem 0;
+        }
+
+        .hero-content {
+            flex: 1.2;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 2rem;
+            color: var(--text-main);
+        }
+
+        .hero h1 span {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .hero-image {
+            flex: 0.8;
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            border-radius: 200px 200px 20px 20px;
+            box-shadow: var(--shadow);
+            transition: transform var(--transition);
+        }
+
+        .hero-image:hover img {
+            transform: translateY(-10px);
+        }
+
+        /* Sections */
+        section {
+            padding: 7rem 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-label {
+            color: var(--accent);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            text-transform: lowercase;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 500;
+            margin-bottom: 4rem;
+            letter-spacing: -0.5px;
+        }
+
+        /* About Grid */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            margin-bottom: 1.8rem;
+            font-size: 1.15rem;
+            font-weight: 300;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .skill-category h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            list-style: none;
+        }
+
+        .skill-list li {
+            font-size: 0.95rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.2rem;
+            color: var(--text-muted);
+            transition: color var(--transition), border-color var(--transition);
+        }
+
+        .skill-list li:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .project-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            padding-bottom: 4rem;
+            border-bottom: 1px solid var(--border);
+            transition: transform var(--transition);
+        }
+
+        .project-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .project-meta {
+            position: sticky;
+            top: 2rem;
+            align-self: start;
+        }
+
+        .project-item h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            transition: color var(--transition);
+        }
+
+        .project-item:hover h3 {
+            color: var(--accent);
+        }
+
+        .project-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-decoration: none;
+            margin-top: 1.5rem;
+            transition: gap var(--transition);
+        }
+
+        .project-links a:hover {
+            gap: 0.8rem;
+        }
+
+        .project-desc p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-main);
+            opacity: 0.7;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            text-align: center;
+            padding: 8rem 0;
+        }
+
+        .contact-section h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-section p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 550px;
+            margin: 0 auto 3rem auto;
+            font-weight: 300;
+        }
+
+        .email-link {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--text-main);
+            text-decoration: none;
+            position: relative;
+            transition: color var(--transition);
+        }
+
+        .email-link:hover {
+            color: var(--accent);
+        }
+
+        .email-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .email-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .social-links {
+            margin-top: 4rem;
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-family: var(--font-mono);
+            transition: color var(--transition), transform var(--transition);
+        }
+
+        .social-links a svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            transition: fill var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: var(--font-mono);
+        }
+
+        /* Enhanced Scroll Reveal Animations (Slide up + Scale + Blur effect) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px) scale(0.98);
+            filter: blur(4px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform, filter;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column-reverse;
+                text-align: left;
+                gap: 3rem;
+                padding: 2rem 0 4rem 0;
+            }
+            .hero-image img { border-radius: 20px; max-width: 100%; width: 100%; aspect-ratio: auto; }
+            .about-grid, .project-item { grid-template-columns: 1fr; gap: 2.5rem; }
+            .nav-links { display: none; }
+            h2 { font-size: 2.2rem; }
+            .email-link { font-size: 1.2rem; }
+            .social-links { gap: 1.5rem; flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+
+    <div class="container">
+        <nav>
+            <a href="#" class="logo">Faisal<span>.</span></a>
+            <div class="nav-controls">
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#work">Work</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <button class="theme-btn" id="theme-toggle" aria-label="Toggle Theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+            </div>
+        </nav>
+
+        <header class="hero reveal">
+            <div class="hero-content">
+                <h1>Engineering with <span>curiosity</span> & precision.</h1>
+                <p>I am a Computer Science engineering student focused on Artificial Intelligence and Data Science. I craft elegant logic and intuitive experiences that bridge the gap between abstract data and human understanding.</p>
+            </div>
+            <div class="hero-image">
+                <img src="me.jpg" alt="Faisal Muzaffar">
+            </div>
+        </header>
+
+        <section id="about" class="reveal">
+            <span class="section-label">/ background</span>
+            <h2>The human behind the code.</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>My journey in software engineering is driven by a deep curiosity about how systems interact. Pursuing a B.Tech in CSE with a specialization in AI and Data Science has given me the tools to dissect complex problems and architect thoughtful solutions.</p>
+                    <p>I believe that the best software doesn't just work—it feels seamless. When I step away from my IDE, I spend my time exploring the intersections of design, data architecture, and user psychology. Building software, to me, is as much an art of communication as it is a science of logic.</p>
+                </div>
+                <div class="skills-container">
+                    <div class="skill-category">
+                        <h3>Core Languages</h3>
+                        <ul class="skill-list">
+                            <li>C / Python</li>
+                            <li>JavaScript (ES6+)</li>
+                            <li>HTML5 / CSS3</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Technologies</h3>
+                        <ul class="skill-list">
+                            <li>React & Node.js</li>
+                            <li>Data Structures & Algorithms</li>
+                            <li>Machine Learning Fundamentals</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="work" class="reveal">
+            <span class="section-label">/ selected work</span>
+            <h2>Ideas brought to life.</h2>
+            <div class="projects-grid">
+                
+                <article class="project-item reveal">
+                    <div class="project-meta">
+                        <h3>CupX Drive</h3>
+                        <div class="project-links">
+                            <a href="https://drv.cupx.in" target="_blank">View Live Project &rarr;</a>
+                        </div>
+                    </div>
+                    <div class="project-desc">
+                        <p>An ephemeral text-file sharing utility designed for frictionless network exchange. Built from a curiosity to simplify data transfer, it completely removes the bloat associated with modern cloud storage in favor of pure speed.</p>
+                        <div class="tech-tags">
+                            <span>Web Storage</span> • <span>JS Logic</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-item reveal">
+                    <div class="project-meta">
+                        <h3>CupX Library</h3>
+                        <div class="project-links">
+                            <a href="https://library.cupx.in" target="_blank">View Live Project &rarr;</a>
+                        </div>
+                    </div>
+                    <div class="project-desc">
+                        <p>An elegant, interactive cataloging system. The focus here was entirely on creating a highly responsive and intuitive user interface to make searching and filtering through digital records feel instantaneous.</p>
+                        <div class="tech-tags">
+                            <span>DOM Manipulation</span> • <span>CSS Grid</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-item reveal">
+                    <div class="project-meta">
+                        <h3>CupX Pay & UPI</h3>
+                        <div class="project-links">
+                            <a href="https://pay.cupx.in" target="_blank">View Live Project &rarr;</a>
+                        </div>
+                    </div>
+                    <div class="project-desc">
+                        <p>A paired exploration into fintech UX and transactional state management. This conceptual digital wallet and gateway demonstrates how complex peer-to-peer logic can be abstracted into a calming, trustworthy frontend experience.</p>
+                        <div class="tech-tags">
+                            <span>React Concepts</span> • <span>State Management</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-item reveal">
+                    <div class="project-meta">
+                        <h3>AmazX</h3>
+                        <div class="project-links">
+                            <a href="https://amazx.cupx.in" target="_blank">View Live Project &rarr;</a>
+                        </div>
+                    </div>
+                    <div class="project-desc">
+                        <p>A rigorous study in complex layout architecture. By reverse-engineering a major e-commerce platform's frontend, I challenged myself to master advanced CSS techniques, flexible grid systems, and adaptive responsive design.</p>
+                        <div class="tech-tags">
+                            <span>Advanced CSS</span> • <span>Responsive Design</span>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section id="contact" class="reveal contact-section">
+            <span class="section-label">/ let's connect</span>
+            <h2>Start a conversation.</h2>
+            <p>Whether you want to discuss software architecture, share an interesting idea, or just talk tech—my inbox is open. Let's build something interesting.</p>
+            
+            <a href="mailto:hello@faisalcpp.qzz.io" class="email-link">hello@faisalcpp.qzz.io</a>
+            
+            <div class="social-links">
+                <a href="https://github.com/faisalqazmi" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    @faisalqazmi
+                </a>
+                <a href="https://instagram.com/faisalcpp" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    @faisalcpp
+                </a>
+                <a href="https://x.com/faisalcpp" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    @faisalcpp
+                </a>
+                <a href="mailto:hello@faisalcpp.qzz.io">
+                    <svg viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.611 3.746zm6.377 1.714l4.908-3.953 4.88 3.942-9.788 7.859-9.789-7.848 4.907-3.955 4.882 3.955zm6.377-3.143l4.623-3.75v9.458l-4.623-5.708zm-14.364-4.5h15.974l-7.987 6.429-7.987-6.429z"/></svg>
+                    hello@faisalcpp.qzz.io
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; <span id="year"></span> Faisal Muzaffar. Crafted with intent.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Set Copyright Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Theme Toggle Logic
+        const themeBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        
+        // Check local storage. Default is LIGHT.
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            htmlElement.setAttribute('data-theme', savedTheme);
+        } else {
+            htmlElement.setAttribute('data-theme', 'light');
+        }
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Fluid Custom Cursor Logic
+        const dot = document.getElementById("cursor-dot");
+        let mouseX = window.innerWidth / 2; 
+        let mouseY = window.innerHeight / 2;
+        let dotX = mouseX; 
+        let dotY = mouseY;
+
+        document.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            dotX += (mouseX - dotX) * 0.15;
+            dotY += (mouseY - dotY) * 0.15;
+            
+            dot.style.transform = `translate(calc(${dotX}px - 50%), calc(${dotY}px - 50%))`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Grow cursor on interactive elements and keep it purple
+        const interactables = document.querySelectorAll('a, button');
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                dot.style.width = '40px';
+                dot.style.height = '40px';
+                dot.style.backgroundColor = 'var(--accent)';
+                dot.style.opacity = '0.3';
+            });
+            el.addEventListener('mouseleave', () => {
+                dot.style.width = '10px';
+                dot.style.height = '10px';
+                dot.style.backgroundColor = 'var(--accent)';
+                dot.style.opacity = '1';
+            });
+        });
+
+        // Advanced Scroll Reveal Observer
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -50px 0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Optional: stop observing once revealed if you prefer
+                    // observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        revealElements.forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
